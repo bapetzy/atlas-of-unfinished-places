@@ -1,0 +1,505 @@
+/* ---------- A place's papers, laid beside the sheet ---------- */
+
+.dossier {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  width: min(500px, 42%);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 30px 34px 56px;
+  background: var(--sheet-white);
+  border-left: 2px solid var(--ink);
+  animation: lay-down 0.32s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@keyframes lay-down {
+  from {
+    transform: translateX(28px);
+    opacity: 0;
+  }
+}
+
+.dossier-close {
+  float: right;
+  margin: 2px 0 8px 16px;
+  font-family: var(--sans);
+  font-stretch: 88%;
+  font-size: 14.5px;
+}
+
+.dossier h1 {
+  font-size: clamp(34px, 4.2vw, 46px);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+
+.dossier h1:focus:not(:focus-visible),
+.finding-question:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.dossier-meta {
+  margin-top: 10px;
+  font-family: var(--sans);
+  font-stretch: 88%;
+  font-size: 14.5px;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+.premise {
+  margin-top: 16px;
+  font-size: 19.5px;
+  line-height: 1.42;
+  text-wrap: pretty;
+}
+
+.dossier h2 {
+  margin: 38px 0 12px;
+  font-size: 15px;
+  font-family: var(--sans);
+  font-stretch: 88%;
+  font-weight: 700;
+}
+
+/* How each edition draws it: five rows, one of them lying on the table now. */
+.drawn {
+  border-top: 1px solid var(--ink);
+}
+
+.drawn a {
+  display: grid;
+  grid-template-columns: 54px 22px 1fr;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px 7px 0;
+  border-bottom: 1px solid var(--hairline);
+  text-decoration: none;
+  font-size: 15.5px;
+  line-height: 1.3;
+}
+
+.drawn a:hover {
+  background: var(--paper);
+}
+
+.drawn a[aria-current] {
+  background: var(--paper-deep);
+  box-shadow: inset 4px 0 0 var(--ink);
+}
+
+.drawn-ed {
+  padding-left: 12px;
+  font-family: var(--sans);
+  font-stretch: 62%;
+  font-weight: 800;
+  font-size: 19px;
+  line-height: 1;
+}
+
+.drawn-ed small {
+  display: block;
+  margin-top: 2px;
+  font-stretch: 80%;
+  font-weight: 400;
+  font-size: 11.5px;
+  color: var(--ink-soft);
+}
+
+.drawn-how strong {
+  font-weight: 650;
+}
+
+.drawn .ed-r {
+  color: var(--pencil);
+}
+
+.drawn .ed-r .drawn-ed small {
+  color: inherit;
+}
+
+.drawn-absent {
+  margin-top: 10px;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+/* ---------- The papers themselves. Each kind keeps the form it had. ---------- */
+
+.records {
+  display: grid;
+  gap: 18px;
+}
+
+.record {
+  position: relative;
+  padding: 18px 20px 14px;
+  background: #fff;
+  border: 1px solid var(--hairline);
+  scroll-margin-top: 14px;
+}
+
+.record:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.record.is-cited {
+  animation: cited 1.8s ease-out;
+}
+
+/* With motion reduced, a cited paper keeps its mark instead of flashing it. */
+@media (prefers-reduced-motion: reduce) {
+  .record.is-cited {
+    animation: none;
+    box-shadow: 0 0 0 3px var(--pencil);
+  }
+}
+
+@keyframes cited {
+  0%,
+  35% {
+    box-shadow: 0 0 0 3px var(--pencil);
+  }
+  100% {
+    box-shadow: 0 0 0 3px transparent;
+  }
+}
+
+.record-kind {
+  font-family: var(--sans);
+  font-stretch: 88%;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+
+.record h3 {
+  margin-top: 2px;
+  font-size: 18.5px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.record-body {
+  margin-top: 12px;
+  font-size: 16.5px;
+  line-height: 1.52;
+}
+
+.record-body p + p {
+  margin-top: 0.7em;
+}
+
+.record .signoff {
+  text-align: right;
+  font-style: italic;
+}
+
+.record-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 16px;
+  margin-top: 14px;
+  padding-top: 9px;
+  border-top: 1px solid var(--hairline);
+  font-family: var(--sans);
+  font-stretch: 88%;
+  font-size: 13.5px;
+  line-height: 1.35;
+  color: var(--ink-soft);
+}
+
+.basis {
+  color: var(--ink);
+  border-bottom: 2px solid var(--p-accent);
+}
+
+/* Varga corrected in magenta and wrote her notes in the same pen. */
+.record.is-hand {
+  background: repeating-linear-gradient(#fff 0 27px, rgb(36 86 200 / 0.13) 27px 28px) 0 76px;
+  border-left: 3px solid var(--magenta);
+}
+
+.record.is-hand .record-body {
+  font-style: italic;
+  font-size: 17px;
+  line-height: 28px;
+}
+
+.record.is-typed .record-body {
+  font-family: var(--typed);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* Logs and daybooks: the date in the margin, the entry beside it. */
+.form-entries .record-body > div {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 12px;
+  padding: 7px 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.form-entries dt {
+  font-family: var(--sans);
+  font-stretch: 84%;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+/* Ledgers are ruled. */
+.form-ledger table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15.5px;
+  line-height: 1.35;
+}
+
+.form-ledger th,
+.form-ledger td {
+  padding: 6px 10px 6px 0;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--hairline);
+  font-weight: 400;
+}
+
+.form-ledger thead th {
+  font-family: var(--sans);
+  font-stretch: 84%;
+  font-size: 13.5px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--ink);
+}
+
+.form-ledger tbody tr:last-child > * {
+  border-bottom: 3px double var(--ink);
+}
+
+.ledger-foot {
+  margin-top: 10px;
+  font-style: italic;
+}
+
+/* A telegram arrives as strips of tape pasted to a form. */
+.form-wire .record-body p {
+  display: table;
+  margin: 0 0 5px;
+  padding: 3px 10px 1px;
+  background: #efe9d3;
+  font-family: var(--typed);
+  font-weight: 700;
+  font-size: 15.5px;
+  letter-spacing: 0.08em;
+}
+
+.form-wire .record-body p + p {
+  margin-top: 0;
+}
+
+/* Things that were printed to be read from across a street. */
+.form-notice .record-body {
+  padding: 16px 18px;
+  border: 3px double var(--ink);
+  text-align: center;
+  text-wrap: balance;
+}
+
+.notice-heading {
+  font-family: var(--sans);
+  font-stretch: 66%;
+  font-weight: 800;
+  font-size: 23px;
+  line-height: 1.12;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 10px;
+}
+
+/* ---------- The reader's finding ---------- */
+
+.finding {
+  margin-top: 40px;
+  padding-top: 4px;
+  border-top: 3px solid var(--pencil);
+}
+
+.finding h2 {
+  margin-top: 16px;
+  color: var(--pencil);
+}
+
+.finding-question {
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 1.18;
+  text-wrap: balance;
+}
+
+.finding-locked,
+.finding-reply {
+  margin-top: 14px;
+  font-size: 16.5px;
+}
+
+.options {
+  margin-top: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.options li > button {
+  display: block;
+  width: 100%;
+  padding: 11px 14px 11px 42px;
+  position: relative;
+  text-align: left;
+  font-family: var(--serif);
+  font-stretch: normal;
+  font-size: 17px;
+  line-height: 1.35;
+  background: #fff;
+}
+
+.options li > button::before {
+  content: '';
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+}
+
+.options li > button:hover {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.options .is-chosen > button {
+  border-color: var(--pencil);
+  box-shadow: inset 0 0 0 1.5px var(--pencil);
+  color: var(--pencil);
+}
+
+.options .is-chosen > button::before {
+  background: var(--pencil);
+  box-shadow: inset 0 0 0 2.5px #fff;
+}
+
+.rests {
+  margin-top: 6px;
+  padding-left: 2px;
+  font-family: var(--sans);
+  font-stretch: 88%;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+.cite {
+  border: 0;
+  padding: 0;
+  background: none;
+  font-size: inherit;
+  font-stretch: inherit;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+.cite:hover {
+  background: none;
+  color: var(--pencil);
+}
+
+.finding-result {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 20px;
+  font-family: var(--sans);
+  font-stretch: 88%;
+  font-size: 14.5px;
+}
+
+.finding-result:not(:empty) {
+  margin-top: 22px;
+}
+
+/* A rubber stamp, so capitals. */
+.stamp {
+  display: inline-block;
+  padding: 4px 11px 3px;
+  border: 2px solid var(--pencil);
+  color: var(--pencil);
+  font-stretch: 68%;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transform: rotate(-2.5deg);
+  animation: stamp 0.28s cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+
+@keyframes stamp {
+  from {
+    transform: rotate(-7deg) scale(1.5);
+    opacity: 0;
+  }
+}
+
+.dossier-next {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 44px;
+  padding-top: 14px;
+  border-top: 1px solid var(--ink);
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.dossier-next a:last-child {
+  text-align: right;
+}
+
+.dossier-next small {
+  display: block;
+  margin-bottom: 3px;
+  font-family: var(--sans);
+  font-stretch: 88%;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 899px) {
+  .dossier {
+    left: 0;
+    width: auto;
+    border-left: 0;
+    padding: 22px 20px 48px;
+    animation-name: lift-up;
+  }
+
+  @keyframes lift-up {
+    from {
+      transform: translateY(24px);
+      opacity: 0;
+    }
+  }
+
+  .form-entries .record-body > div {
+    grid-template-columns: 84px 1fr;
+  }
+}

@@ -1,0 +1,509 @@
+/*
+ * The page is the sheet. Everything that is not chart lives in its margins.
+ *
+ * Inks, one to a plate:
+ *   black      the outline plate, and all lettering in the margins
+ *   vermilion  railways, on the edition a railway company paid for
+ *   magenta    hand corrections, and lights
+ *   buff       land, on the one edition compiled from the air
+ *   pencil     the reader
+ */
+
+:root {
+  --paper: #f2f3ee;
+  --paper-deep: #e6e8e0;
+  --sheet-white: #fbfbf7;
+  --ink: #1e2326;
+  --ink-soft: #586166;
+  --hairline: rgb(30 35 38 / 0.22);
+  --vermilion: #c8321e;
+  --magenta: #b4127a;
+  --buff: #ebdda6;
+  --shallows: #cfe0e6;
+  --pencil: #2456c8;
+  --accent: var(--ink);
+
+  --serif: 'Brygada 1918 Variable', 'Iowan Old Style', Georgia, serif;
+  --sans: 'Archivo Variable', 'Arial Narrow', Arial, sans-serif;
+  --typed: 'Courier Prime', 'Courier New', monospace;
+
+  --gutter: 18px;
+}
+
+.app[data-ed='ii'] { --accent: var(--vermilion); }
+.app[data-ed='iii'] { --accent: var(--magenta); }
+.app[data-ed='iv'] { --accent: #3d6f76; }
+.app[data-ed='r'] { --accent: var(--pencil); }
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+p,
+ol,
+ul,
+dl,
+dd,
+figure {
+  margin: 0;
+}
+
+ol,
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: 1px solid var(--ink);
+  background: var(--sheet-white);
+  padding: 7px 14px;
+  font-family: var(--sans);
+  font-size: 14.5px;
+  font-stretch: 92%;
+  border-radius: 0;
+}
+
+button:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.text-button {
+  border: 0;
+  background: none;
+  padding: 0;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+.text-button:hover {
+  background: none;
+  color: inherit;
+  text-decoration-thickness: 2px;
+}
+
+.button {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 9px 18px;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-stretch: 92%;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.button:hover {
+  background: var(--accent);
+}
+
+:focus-visible {
+  outline: 3px solid var(--pencil);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip {
+  position: absolute;
+  left: var(--gutter);
+  top: -60px;
+  z-index: 50;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 8px 14px;
+  font-family: var(--sans);
+  font-size: 14.5px;
+}
+
+.skip:focus {
+  top: 8px;
+}
+
+/* ---------- The sheet and its margins ---------- */
+
+.app {
+  height: 100vh;
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+.masthead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px 28px;
+  padding: 11px var(--gutter) 9px;
+}
+
+.masthead-title {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  min-width: 0;
+  text-decoration: none;
+}
+
+.masthead-name {
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  line-height: 1.15;
+}
+
+.masthead-sheet {
+  font-family: var(--sans);
+  font-stretch: 84%;
+  font-size: 14px;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.masthead-nav {
+  display: flex;
+  gap: 22px;
+  font-family: var(--sans);
+  font-stretch: 88%;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.masthead-nav a {
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+}
+
+.masthead-nav a:hover {
+  border-bottom-color: var(--hairline);
+}
+
+.masthead-nav a[aria-current] {
+  font-weight: 700;
+  border-bottom-color: var(--accent);
+}
+
+/* The neatline: a heavy rule with a fine one inside it, as on a printed chart. */
+.frame {
+  position: relative;
+  min-height: 0;
+  margin: 0 12px;
+  border: 2px solid var(--ink);
+  overflow: hidden;
+}
+
+.frame:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.frame:focus-visible {
+  outline-offset: -6px;
+}
+
+.frame::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid var(--ink);
+  pointer-events: none;
+  z-index: 6;
+}
+
+.app:not([data-view='sheet']) .frame {
+  margin-bottom: 12px;
+}
+
+/* ---------- Lower margin: the edition rail ---------- */
+
+.rail {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 32px;
+  padding: 8px var(--gutter) 10px;
+}
+
+.rail-note {
+  min-width: 0;
+  max-width: 62ch;
+}
+
+.rail-title {
+  font-size: 16px;
+  line-height: 1.3;
+}
+
+.rail-rule {
+  font-size: 15px;
+  font-style: italic;
+  line-height: 1.35;
+  color: var(--ink-soft);
+}
+
+.rail-tracks {
+  display: grid;
+  gap: 3px;
+  flex: none;
+}
+
+.track {
+  display: grid;
+  grid-template-columns: 50px repeat(6, 58px);
+  align-items: stretch;
+}
+
+.track-name {
+  align-self: center;
+  font-family: var(--sans);
+  font-stretch: 84%;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+
+.pick {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-family: var(--sans);
+}
+
+.track-sheet .pick {
+  height: 40px;
+  border: 1px solid var(--ink);
+  margin-left: -1px;
+}
+
+.track-sheet .pick-blank {
+  border: 0;
+}
+
+.pick-num {
+  font-stretch: 62%;
+  font-weight: 800;
+  font-size: 21px;
+  line-height: 1;
+}
+
+.pick-year {
+  font-stretch: 80%;
+  font-size: 11.5px;
+  line-height: 1.2;
+  color: var(--ink-soft);
+}
+
+/* Each edition's second ink, as a registration tick on its key. */
+.track-sheet .pick::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--tick, transparent);
+}
+
+.pick.ed-ii { --tick: var(--vermilion); }
+.pick.ed-iii { --tick: var(--magenta); }
+.pick.ed-iv { --tick: var(--buff); }
+.pick.ed-r { --tick: var(--pencil); }
+
+.track-sheet .pick:hover {
+  background: var(--paper-deep);
+}
+
+.track-sheet .pick[aria-current] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.track-sheet .pick[aria-current] .pick-year {
+  color: var(--paper);
+}
+
+.track-glass {
+  background: linear-gradient(var(--hairline), var(--hairline)) 50px 50% / calc(100% - 50px - 58px) 1px no-repeat;
+}
+
+.track-glass .pick {
+  height: 26px;
+}
+
+.pick-lens {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+}
+
+.track-glass .pick:hover .pick-lens {
+  background: var(--paper-deep);
+}
+
+.track-glass .pick[aria-current] .pick-lens {
+  background: var(--ink);
+  box-shadow: 0 0 0 2.5px var(--paper), 0 0 0 4px var(--ink);
+}
+
+.pick-off {
+  font-stretch: 84%;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+
+.pick-off[aria-current] {
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+/* ---------- When the chart cannot be drawn ---------- */
+
+.fault {
+  max-width: 60ch;
+  margin: 12vh auto;
+  padding: 0 var(--gutter);
+}
+
+.fault h1 {
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 1.1;
+  margin-bottom: 14px;
+}
+
+.fault p + p {
+  margin-top: 12px;
+}
+
+.fault-detail {
+  font-family: var(--typed);
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+
+/* ---------- Narrow sheets ---------- */
+
+@media (max-width: 860px) {
+  .masthead {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    padding: 9px 14px 8px;
+  }
+
+  .masthead-sheet {
+    display: none;
+  }
+
+  .masthead-name {
+    font-size: 19px;
+  }
+
+  .masthead-nav {
+    flex-wrap: wrap;
+    gap: 4px 18px;
+    font-size: 14.5px;
+  }
+
+  .frame {
+    margin: 0 6px;
+  }
+
+  .app:not([data-view='sheet']) .frame {
+    margin-bottom: 6px;
+  }
+
+  .rail {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    padding: 7px 8px 8px;
+  }
+
+  .rail-rule {
+    display: none;
+  }
+
+  .rail-title {
+    font-size: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .track {
+    grid-template-columns: 44px repeat(6, minmax(0, 1fr));
+  }
+
+  .track-glass {
+    background: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

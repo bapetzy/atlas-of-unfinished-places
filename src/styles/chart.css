@@ -1,0 +1,670 @@
+/* ---------- The chart ---------- */
+
+.sheet,
+.sheet-map {
+  position: absolute;
+  inset: 0;
+}
+
+.sheet-map:focus-visible {
+  outline: 3px solid var(--pencil);
+  outline-offset: -6px;
+  z-index: 1;
+}
+
+.chart {
+  display: block;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+  background: var(--paper);
+}
+
+.chart:active {
+  cursor: grabbing;
+}
+
+/*
+ * Each edition is a plate with its own inks. The same classes are set on the
+ * glass's ring and on edition keys in the margin, so the inks travel together.
+ */
+.ed-i {
+  --p-sea: #e3e6de;
+  --p-land: #f5f6f1;
+  --p-ink: #1e2326;
+  --p-accent: #1e2326;
+  --p-water: #4f5a5e;
+}
+
+.ed-ii {
+  --p-sea: #e2ebe9;
+  --p-land: #f5f3ea;
+  --p-ink: #1b1f22;
+  --p-accent: #c8321e;
+  --p-water: #5d8790;
+}
+
+.ed-iii {
+  --p-sea: #e9edee;
+  --p-land: #f6f5f0;
+  --p-ink: #262a2d;
+  --p-accent: #b4127a;
+  --p-water: #6d8c95;
+}
+
+.ed-iv {
+  --p-sea: #cfe0e6;
+  --p-land: #ebdda6;
+  --p-ink: #37474a;
+  --p-accent: #b4127a;
+  --p-water: #6f97a5;
+}
+
+.ed-r {
+  --p-sea: #ebeff2;
+  --p-land: #f9f9f6;
+  --p-ink: #68747a;
+  --p-accent: #2456c8;
+  --p-water: #a9b8be;
+}
+
+.plate .sea {
+  fill: var(--p-sea);
+}
+
+.plate .land {
+  fill: var(--p-land);
+  stroke: var(--p-ink);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.plate .waterline {
+  fill: none;
+  stroke: var(--p-water);
+  stroke-width: 0.7;
+}
+
+.waterline.w0 { opacity: 0.8; }
+.waterline.w1 { opacity: 0.55; }
+.waterline.w2 { opacity: 0.36; }
+.waterline.w3 { opacity: 0.2; }
+
+/* The camera sees depth as tone, not as engraved lines. */
+.ed-iv .waterline {
+  stroke: #fff;
+  stroke-width: 1.2;
+}
+
+.plate .contour {
+  fill: none;
+  stroke: var(--p-ink);
+  stroke-width: 0.5;
+  opacity: 0.3;
+}
+
+.plate .contour.index {
+  stroke-width: 0.95;
+  opacity: 0.4;
+}
+
+.ed-iv .contour {
+  stroke: #8a6a2c;
+  opacity: 0.45;
+}
+
+.plate .graticule {
+  fill: none;
+  stroke: var(--p-ink);
+  stroke-width: 0.6;
+  opacity: 0.16;
+}
+
+.plate .plotting {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 24px;
+  fill: var(--p-ink);
+  opacity: 0.55;
+}
+
+.river-bank,
+.river-water {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.river-bank {
+  stroke: var(--p-ink);
+  stroke-width: 6.5;
+}
+
+.river-water {
+  stroke: var(--p-sea);
+  stroke-width: 4;
+}
+
+.road {
+  fill: none;
+  stroke: var(--p-ink);
+  stroke-width: 1;
+  opacity: 0.62;
+}
+
+.ed-i .road {
+  stroke-dasharray: 5 2.6;
+}
+
+/* Canals and railways: a bed, its dressing, and the corrector's cancellation. */
+.canal,
+.railway {
+  --feat: var(--p-ink);
+  fill: none;
+}
+
+.ed-ii .railway,
+.ed-r .railway,
+.ed-r .canal {
+  --feat: var(--p-accent);
+}
+
+.ed-r .mode-broken {
+  --feat: var(--p-ink);
+}
+
+.canal .bed {
+  stroke: var(--feat);
+  stroke-width: 4.4;
+}
+
+.canal .dress {
+  stroke: var(--p-sea);
+  stroke-width: 2.1;
+}
+
+.railway .bed {
+  stroke: var(--feat);
+  stroke-width: 1.9;
+}
+
+.railway .dress {
+  stroke: var(--feat);
+  stroke-width: 6.5;
+  stroke-dasharray: 1.4 8.6;
+}
+
+.mode-broken .bed {
+  stroke-width: 1.5;
+  stroke-dasharray: 7 4.5;
+}
+
+.mode-trace .bed {
+  stroke-width: 1.1;
+  stroke-dasharray: 1.4 3.2;
+  stroke-linecap: round;
+}
+
+.mode-broken .dress,
+.mode-trace .dress {
+  display: none;
+}
+
+.mode-struck .bed,
+.mode-struck .dress {
+  opacity: 0.5;
+}
+
+.mode-struck .cancel {
+  stroke: var(--p-accent);
+  stroke-width: 2.2;
+  stroke-dasharray: 2.4 9;
+}
+
+/* ---------- Lettering ---------- */
+
+.plate text {
+  font-family: var(--serif);
+  fill: var(--p-ink);
+  paint-order: stroke;
+  stroke: var(--p-land);
+  stroke-width: 3.4px;
+  stroke-linejoin: round;
+}
+
+.name-sea {
+  font-size: 30px;
+  font-style: italic;
+  letter-spacing: 0.16em;
+  fill: var(--p-water) !important;
+  stroke: none !important;
+}
+
+.name-water {
+  font-size: 15px;
+  font-style: italic;
+  letter-spacing: 0.1em;
+  stroke: var(--p-sea) !important;
+}
+
+/* Capitals here are the cartographer's, for the names of country rather than of places. */
+.name-region {
+  font-size: 19px;
+  letter-spacing: 0.55em;
+  text-transform: uppercase;
+  opacity: 0.62;
+}
+
+.name-hill {
+  font-size: 13.5px;
+  font-style: italic;
+  letter-spacing: 0.04em;
+  opacity: 0.75;
+}
+
+.name-town {
+  font-size: 13.5px;
+  letter-spacing: 0.01em;
+}
+
+.town path {
+  fill: var(--p-ink);
+}
+
+.ed-iv text {
+  font-family: var(--sans);
+  font-stretch: 78%;
+}
+
+.ed-r .place text {
+  font-style: italic;
+}
+
+/* On the reader's sheet the linework stays pale but the lettering has to be read. */
+.ed-r text,
+.ed-r .place.unsettled .label,
+.ed-r .place.unsettled .note {
+  fill: #586166;
+}
+
+.ed-r .name-sea {
+  fill: #738790 !important;
+}
+
+.ed-iv .name-sea {
+  fill: #4f7b8b !important;
+}
+
+/* ---------- The ten places ---------- */
+
+.place {
+  --mark: var(--p-ink);
+  cursor: pointer;
+  outline: none;
+}
+
+.ed-r .place:not(.unsettled) {
+  --mark: var(--p-accent);
+}
+
+.place .hit {
+  fill: transparent;
+  pointer-events: all;
+}
+
+.place .ring {
+  fill: none;
+  stroke: var(--p-accent);
+  stroke-width: 1.4;
+  stroke-dasharray: 3 3.5;
+  opacity: 0;
+}
+
+.place:hover .ring {
+  opacity: 0.55;
+}
+
+.place.is-active .ring {
+  opacity: 1;
+}
+
+.place:focus-visible .ring {
+  opacity: 1;
+  stroke: var(--pencil);
+  stroke-width: 3;
+  stroke-dasharray: none;
+}
+
+.place .label {
+  font-size: 15.5px;
+  font-weight: 650;
+  fill: var(--mark);
+}
+
+.ed-i .place .label {
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.place .label.gone {
+  text-decoration: line-through;
+}
+
+.place .note {
+  font-size: 11.5px;
+  font-style: italic;
+  fill: var(--p-accent);
+}
+
+.ed-i .place .note,
+.place.unsettled .note {
+  fill: var(--p-ink);
+}
+
+.place .line {
+  fill: none;
+  stroke: var(--mark);
+  stroke-width: 1.3;
+  stroke-linejoin: round;
+}
+
+.place .line.thin {
+  stroke-width: 0.6;
+}
+
+.place .line.strong {
+  stroke-width: 1.8;
+}
+
+.place .solid {
+  fill: var(--mark);
+}
+
+.place .flare {
+  fill: var(--p-accent);
+}
+
+.st-stands .fillable {
+  fill: color-mix(in srgb, var(--mark) 9%, transparent);
+}
+
+.st-proposed .line {
+  stroke-dasharray: 5 3.4;
+}
+
+.st-ruin .line,
+.st-doubtful .line {
+  stroke-dasharray: 1.3 2.8;
+  stroke-linecap: round;
+}
+
+.st-ruin .solid {
+  fill: none;
+  stroke: var(--mark);
+  stroke-width: 0.9;
+  stroke-dasharray: 1.3 1.8;
+}
+
+.st-ruin .flare,
+.st-struck .flare {
+  display: none;
+}
+
+.place.unsettled .flare {
+  fill: var(--mark);
+}
+
+.place .strike {
+  fill: none;
+  stroke: var(--p-accent);
+  stroke-width: 1.7;
+}
+
+.place .deck-edge {
+  stroke-width: 5.2;
+}
+
+.place .deck {
+  fill: none;
+  stroke: var(--p-land);
+  stroke-width: 2.6;
+}
+
+.place .lake {
+  stroke: var(--p-water);
+  stroke-width: 1.1;
+}
+
+.plate .hatch {
+  stroke: var(--p-water);
+  stroke-width: 0.9;
+}
+
+.place .dam {
+  stroke-width: 2.6;
+}
+
+/* Sorrel Light, if the reader finds it is still shown: one turn every ten seconds. */
+.place .beam {
+  fill: var(--p-accent);
+  opacity: 0.2;
+  animation: sweep 10s linear infinite;
+}
+
+@keyframes sweep {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* The Meridian Quarter, if the reader finds that it turns. */
+.place .turning {
+  animation: sweep 180s linear infinite;
+}
+
+/* ---------- The reading glass ---------- */
+
+.glass-ring {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+  box-shadow:
+    0 0 0 2px var(--ink),
+    0 0 0 3.5px var(--paper),
+    0 0 0 4.5px var(--ink),
+    0 10px 24px -6px rgb(30 35 38 / 0.45);
+  z-index: 2;
+}
+
+.glass-tag {
+  position: absolute;
+  top: calc(100% + 11px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1px 9px 2px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--sans);
+  font-stretch: 84%;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.reader-origin {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  color: var(--pencil);
+  font-style: italic;
+  font-size: 14px;
+  z-index: 2;
+}
+
+.reader-origin path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.reader-origin circle {
+  fill: currentColor;
+}
+
+/* ---------- Furniture inside the neatline ---------- */
+
+.grid-letters span {
+  position: absolute;
+  z-index: 3;
+  min-width: 20px;
+  padding: 0 5px;
+  background: var(--paper);
+  font-family: var(--sans);
+  font-stretch: 80%;
+  font-weight: 700;
+  font-size: 12.5px;
+  line-height: 17px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.grid-col {
+  top: 4px;
+  transform: translateX(-50%);
+  border: 1px solid var(--ink);
+  border-top: 0;
+}
+
+.grid-row {
+  left: 4px;
+  transform: translateY(-50%);
+  border: 1px solid var(--ink);
+  border-left: 0;
+}
+
+.sheet-foot {
+  position: absolute;
+  left: 16px;
+  bottom: 14px;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: min(60%, 420px);
+  font-family: var(--sans);
+  font-stretch: 88%;
+  font-size: 13.5px;
+  line-height: 1.35;
+}
+
+.scale-bar {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 4px 9px 4px 7px;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+}
+
+.scale-bar-rule {
+  height: 6px;
+  border: 1px solid var(--ink);
+  background: linear-gradient(90deg, var(--ink) 50%, transparent 50%) 0 0 / 33.34% 100%;
+}
+
+.not-shown {
+  padding: 4px 9px;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+}
+
+.zoom {
+  position: absolute;
+  right: 16px;
+  bottom: 14px;
+  z-index: 3;
+  display: flex;
+}
+
+.zoom button {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  margin-left: -1px;
+  background: var(--paper);
+  font-size: 17px;
+  line-height: 1;
+}
+
+.zoom button:hover {
+  background: var(--ink);
+}
+
+.zoom .zoom-whole {
+  font-size: 13.5px;
+}
+
+/* The slip tucked into the corner of a sheet the first time it is unrolled. */
+.slip {
+  position: absolute;
+  top: 34px;
+  right: 22px;
+  z-index: 4;
+  width: min(360px, calc(100% - 44px));
+  padding: 18px 20px 16px;
+  background: var(--sheet-white);
+  border: 1px solid var(--ink);
+  box-shadow: 5px 5px 0 rgb(30 35 38 / 0.14);
+  transform: rotate(0.7deg);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.slip-lead {
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+
+.slip button {
+  margin-top: 14px;
+}
+
+@media (max-width: 860px) {
+  .slip {
+    top: 30px;
+    right: 14px;
+    width: calc(100% - 28px);
+    padding: 14px 16px;
+    font-size: 15px;
+    transform: none;
+  }
+
+  .slip-lead {
+    font-size: 19px;
+  }
+
+  .sheet-foot {
+    left: 10px;
+    bottom: 10px;
+    max-width: calc(100% - 150px);
+  }
+
+  .zoom {
+    right: 10px;
+    bottom: 10px;
+  }
+
+  .zoom .zoom-whole {
+    display: none;
+  }
+}

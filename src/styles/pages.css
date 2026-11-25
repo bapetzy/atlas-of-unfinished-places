@@ -1,0 +1,618 @@
+/* ---------- Pages that are read rather than explored ---------- */
+
+.page {
+  height: 100%;
+  overflow-y: auto;
+  padding: clamp(28px, 5vw, 64px) clamp(20px, 6vw, 88px) 80px;
+  background: var(--sheet-white);
+}
+
+.page > * {
+  max-width: 1040px;
+}
+
+.page-head h1:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.page-head h1 {
+  font-size: clamp(44px, 7.5vw, 92px);
+  font-weight: 450;
+  line-height: 0.96;
+  letter-spacing: -0.022em;
+  text-wrap: balance;
+}
+
+.page-lead {
+  max-width: 60ch;
+  margin-top: 20px;
+  font-size: clamp(19px, 2vw, 22px);
+  line-height: 1.42;
+  text-wrap: pretty;
+}
+
+.page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  margin-top: 24px;
+}
+
+.page h2 {
+  font-size: 26px;
+  font-weight: 550;
+  line-height: 1.15;
+}
+
+.page section {
+  margin-top: 56px;
+}
+
+.page section > h2 {
+  margin-bottom: 16px;
+  padding-top: 12px;
+  border-top: 2px solid var(--ink);
+}
+
+.page section > p {
+  max-width: 64ch;
+}
+
+.page section > p + p {
+  margin-top: 0.8em;
+}
+
+.warning {
+  color: var(--vermilion);
+  font-family: var(--sans);
+  font-stretch: 88%;
+  font-size: 14.5px;
+}
+
+/* ---------- Status symbols, wherever they appear ---------- */
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  vertical-align: middle;
+}
+
+.status svg {
+  flex: none;
+}
+
+.s-fill {
+  fill: currentColor;
+}
+
+.s-line {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+
+.s-cancel {
+  stroke: var(--magenta);
+  stroke-width: 1.7;
+}
+
+.s-faint {
+  stroke: currentColor;
+  stroke-width: 1.5;
+  opacity: 0.4;
+}
+
+/* ---------- Gazetteer ---------- */
+
+.gaz-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 18px 40px;
+  margin-top: 40px;
+}
+
+.gaz-search {
+  flex: 1 1 320px;
+  max-width: 460px;
+}
+
+.gaz-search span,
+.gaz-show legend {
+  display: block;
+  margin-bottom: 6px;
+  padding: 0;
+  font-family: var(--sans);
+  font-stretch: 88%;
+  font-size: 14.5px;
+}
+
+.gaz-search input {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  background: #fff;
+  font-size: 18px;
+}
+
+.gaz-search input::placeholder {
+  color: var(--ink-soft);
+  font-style: italic;
+  opacity: 1;
+}
+
+.gaz-show {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.gaz-show legend {
+  float: left;
+  width: 100%;
+}
+
+.gaz-show label {
+  margin-left: -1px;
+  cursor: pointer;
+}
+
+.gaz-show label span {
+  display: block;
+  padding: 9px 14px;
+  border: 1px solid var(--ink);
+  font-family: var(--sans);
+  font-stretch: 88%;
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+.gaz-show input {
+  position: absolute;
+  opacity: 0;
+}
+
+.gaz-show input:checked + span {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.gaz-show input:focus-visible + span {
+  outline: 3px solid var(--pencil);
+  outline-offset: 2px;
+}
+
+.gaz-count {
+  margin-top: 22px;
+  font-family: var(--sans);
+  font-stretch: 88%;
+  font-size: 14.5px;
+  color: var(--ink-soft);
+}
+
+.gaz-table {
+  width: 100%;
+  margin-top: 8px;
+  border-collapse: collapse;
+  border-top: 2px solid var(--ink);
+}
+
+.gaz-table th,
+.gaz-table td {
+  padding: 13px 14px 13px 0;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--hairline);
+  font-weight: 400;
+}
+
+.gaz-table thead th {
+  position: sticky;
+  top: calc(-1 * clamp(28px, 5vw, 64px));
+  z-index: 1;
+  padding-top: 10px;
+  padding-bottom: 8px;
+  background: var(--sheet-white);
+  border-bottom: 1px solid var(--ink);
+  font-family: var(--sans);
+  font-stretch: 88%;
+  font-size: 14px;
+  font-weight: 600;
+  vertical-align: bottom;
+}
+
+.gaz-num {
+  display: block;
+  font-stretch: 62%;
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.gaz-year {
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+
+.gaz-table tbody th a {
+  font-size: 22px;
+  font-weight: 550;
+  line-height: 1.15;
+}
+
+.gaz-kind {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--sans);
+  font-stretch: 88%;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+
+.gaz-square {
+  font-family: var(--sans);
+  font-stretch: 80%;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.gaz-ed {
+  white-space: nowrap;
+}
+
+td.gaz-ed {
+  font-family: var(--sans);
+  font-stretch: 88%;
+  font-size: 14.5px;
+}
+
+.gaz-how {
+  margin-left: 7px;
+  vertical-align: middle;
+}
+
+.gaz-table .ed-r {
+  color: var(--pencil);
+}
+
+.gaz-table .ed-r .gaz-year {
+  color: inherit;
+}
+
+.gaz-table td.is-open {
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.gaz-table td.is-open .gaz-how {
+  margin-left: 0;
+}
+
+.gaz-table tbody tr:hover {
+  background: var(--paper);
+}
+
+.empty {
+  margin-top: 16px;
+  padding: 36px 0 12px;
+  border-top: 2px solid var(--ink);
+}
+
+.empty-lead {
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+
+.empty button {
+  margin-top: 20px;
+}
+
+.legend dl,
+.about-legend {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 4px 40px;
+}
+
+.legend dl > div,
+.about-legend > div {
+  display: grid;
+  grid-template-columns: 124px 1fr;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--hairline);
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.legend dt,
+.about-legend dt {
+  font-family: var(--sans);
+  font-stretch: 88%;
+  font-weight: 600;
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+/* ---------- Your edition ---------- */
+
+.app[data-view='yours'] .page-head h1 {
+  color: var(--pencil);
+  font-style: italic;
+}
+
+.tally {
+  display: flex;
+  gap: 5px;
+  margin-top: 22px;
+}
+
+.tally span {
+  width: 30px;
+  height: 9px;
+  border: 1.5px solid var(--pencil);
+}
+
+.tally .is-done {
+  background: var(--pencil);
+}
+
+.findings {
+  margin-top: 48px;
+  border-top: 2px solid var(--ink);
+}
+
+.findings li {
+  display: grid;
+  grid-template-columns: minmax(180px, 2fr) 3fr 4fr;
+  gap: 6px 32px;
+  align-items: baseline;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.findings h2 {
+  font-size: 22px;
+}
+
+.findings-q {
+  font-size: 16.5px;
+  color: var(--ink-soft);
+}
+
+.findings-a {
+  color: var(--pencil);
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.findings-open {
+  color: var(--ink-soft);
+  font-size: 16.5px;
+}
+
+.withdraw {
+  margin-top: 28px;
+  font-family: var(--sans);
+  font-stretch: 88%;
+  font-size: 15px;
+}
+
+.withdraw .danger {
+  border-color: var(--vermilion);
+  color: var(--vermilion);
+}
+
+.withdraw .danger:hover {
+  background: var(--vermilion);
+  color: #fff;
+}
+
+.kept {
+  margin-top: 18px;
+  font-family: var(--sans);
+  font-stretch: 88%;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+/* The Office's reply is typed, on its own paper. */
+.reply {
+  max-width: 62ch;
+  margin-top: 44px;
+  padding: 34px 38px 30px;
+  background: #fff;
+  border: 1px solid var(--ink);
+  box-shadow: 6px 6px 0 rgb(30 35 38 / 0.12);
+  font-family: var(--typed);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.reply p + p {
+  margin-top: 1em;
+}
+
+.reply-from {
+  font-family: var(--sans);
+  font-stretch: 66%;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding-bottom: 12px;
+  border-bottom: 3px double var(--ink);
+}
+
+.reply .signoff {
+  margin-top: 2em;
+  text-align: right;
+}
+
+/* ---------- How to read it ---------- */
+
+.about-editions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 28px 40px;
+}
+
+.about-editions li {
+  padding-top: 12px;
+  border-top: 4px solid var(--p-accent);
+  font-size: 16.5px;
+  line-height: 1.45;
+}
+
+.about-editions li.ed-iv {
+  border-top-color: var(--buff);
+}
+
+.about-editions h3 {
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.about-editions h3 span {
+  display: block;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.about-surveyor {
+  margin: 6px 0 8px;
+  font-family: var(--sans);
+  font-stretch: 88%;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.about-caution {
+  margin-top: 6px;
+  font-style: italic;
+}
+
+.about-steps {
+  max-width: 64ch;
+  counter-reset: step;
+}
+
+.about-steps li {
+  position: relative;
+  padding: 0 0 16px 44px;
+  counter-increment: step;
+}
+
+.about-steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: -4px;
+  font-family: var(--sans);
+  font-stretch: 62%;
+  font-weight: 800;
+  font-size: 28px;
+}
+
+.about-keys {
+  max-width: 64ch;
+}
+
+.about-keys > div {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.about-keys dt {
+  font-family: var(--sans);
+  font-stretch: 88%;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* ---------- Narrow pages ---------- */
+
+@media (max-width: 760px) {
+  .gaz-table,
+  .gaz-table tbody {
+    display: block;
+  }
+
+  .gaz-table thead {
+    display: none;
+  }
+
+  .gaz-table tbody tr {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px 4px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .gaz-table th,
+  .gaz-table td {
+    padding: 0;
+    border: 0;
+  }
+
+  .gaz-table tbody th {
+    grid-column: 1 / 5;
+  }
+
+  .gaz-table .gaz-square {
+    grid-column: 5;
+    text-align: right;
+  }
+
+  /* On a narrow page the five symbols stand in a row and keep their place by position. */
+  td.gaz-ed {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-size: 12.5px;
+    white-space: normal;
+  }
+
+  .gaz-how,
+  .gaz-table td.is-open .gaz-how {
+    margin-left: 0;
+  }
+
+  /* The column heads are gone at this width, so each cell carries its own numeral. */
+  td.gaz-ed::before {
+    content: attr(data-edition);
+    font-stretch: 62%;
+    font-weight: 800;
+    font-size: 15px;
+    font-style: normal;
+    line-height: 1;
+  }
+
+  .findings li {
+    grid-template-columns: 1fr;
+  }
+
+  .about-keys > div {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .reply {
+    padding: 22px 20px;
+    font-size: 15px;
+  }
+}
